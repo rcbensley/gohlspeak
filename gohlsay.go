@@ -16,7 +16,7 @@ var files embed.FS
 
 func main() {
 
-	fp := "vox/attention.wav.mp3"
+	fp := "vox/attention.mp3"
 	fb, err := files.ReadFile(fp)
 	if err != nil {
 		panic(err)
