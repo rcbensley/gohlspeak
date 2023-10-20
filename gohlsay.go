@@ -5,6 +5,7 @@ import (
 	"embed"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	_ "embed"
@@ -16,12 +17,32 @@ import (
 //go:embed vox
 var files embed.FS
 
+var AllWords string = ""
+
 func main() {
+
+	all, err := os.ReadDir("./vox/")
+	if err != nil {
+		panic(err)
+	}
+
+	for _, w := range all {
+		fn := strings.Split(w.Name(), ".")
+		if len(fn) == 2 {
+			AllWords = AllWords + " " + fn[0]
+		}
+	}
+
 	l := len(os.Args)
 
 	if l <= 1 {
-		fmt.Println("no words")
+		fmt.Println("No words. Use -w for a list of available words")
 		os.Exit(1)
+	}
+
+	if os.Args[1] == "-w" {
+		fmt.Println(AllWords)
+		os.Exit(0)
 	}
 
 	words := os.Args[1:]
@@ -68,6 +89,6 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		time.Sleep(time.Millisecond * 333)
+		time.Sleep(time.Millisecond * 200)
 	}
 }
